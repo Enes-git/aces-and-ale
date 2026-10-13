@@ -1,95 +1,107 @@
-# Required Requirement Inputs
+# Product Requirements
 
-- Project purpose: Manage tennis tournaments with eight players per tournament, including player names, matches between participants, a scoreboard, statistics, world and local rankings, a match plan, merchandising, and beer garden management.
-- Primary users / actors: Players, judges, admin, press, trainers, audience. Responsibilities and permitted actions: UNKNOWN.
-- Core workflows: Tournament participation and matches between players; scoreboard use; statistics; world and local rankings; match planning; merchandising; beer garden management. Workflow steps, triggers, and completion conditions: UNKNOWN.
-- Business objects / data entities: Tournaments, players, player names, matches, scores, statistics, world rankings, local rankings, match plans. Required data for merchandising and beer garden management: UNKNOWN.
-- External integrations: UNKNOWN.
-- Authentication / roles: Actor categories are players, judges, admin, press, trainers, and audience. Whether these categories represent access-control roles: UNKNOWN. Authentication requirements and permissions: UNKNOWN.
-- Regulatory or privacy constraints: UNKNOWN.
+This document owns functional and nonfunctional product behavior and acceptance criteria. [SECURITY.md](SECURITY.md) exclusively owns security requirements, permissions, disclosure, privacy and regulatory controls. [DESIGN.md](DESIGN.md) owns presentation and accessibility; [ARCHITECTURE.md](ARCHITECTURE.md) owns implementation choices. Authority and authoring conventions: [AGENTS.md](AGENTS.md).
+
+## Required Requirement Inputs
+
+- Purpose: Manage tennis tournaments with eight players at the start of play, participant names, matches, scoreboard, statistics, world/local rankings, match plans, merchandising and beer garden management.
+- Actor categories: Players, judges, admin, press, trainers and audience. Permissions and account relationships: [SECURITY.md](SECURITY.md#access-and-disclosure-policy).
+- Business records: Tournaments, participants and supplied names, matches, plans, scores/completed results, statistics and rankings; catalog items, stock adjustments, sales, menu entries and orders as defined below.
+- External integrations and unprovided measurable nonfunctional targets: TO BE DECIDED (OQ-17 and OQ-19).
+- Security/authentication and regulatory/privacy decisions: [SECURITY.md](SECURITY.md#open-security-questions).
+- Trace: Original project notes quoted in FR-1.1–FR-4.2; later human decisions (2026-10-13) allow incomplete drafts and set the start condition. FR-5 through FR-8 resolve launch scope under the user's explicit best-judgment delegation. Security policy has its own source trace.
 
 # Functional Requirements
 
+All operations below are subject to the owner policy in [SECURITY.md](SECURITY.md#access-and-disclosure-policy); this document does not grant permissions.
+
 ### Tournament Participation
 
-- **FR-1.1** The system MUST support tournaments consisting of exactly eight players.
-  - **Acceptance criteria:** Given a tournament with its participating players established, its participant information contains exactly eight players.
-  - **Trace:** “8 players per tournament.”
-
-- **FR-1.2** The system MUST identify tournament participants by their names.
-  - **Acceptance criteria:** Given a tournament with eight named participants, its participant information makes each participant's supplied name available.
+- **FR-1.1** The system MUST allow incomplete tournament drafts and require exactly eight assigned players before play starts.
+  - **Acceptance criteria:** Saving a draft with zero through seven players succeeds. Starting with fewer or more than eight is rejected without starting play; starting with exactly eight satisfies this participant-count precondition. Other start preconditions remain OQ-1/OQ-2/OQ-10.
+  - **Trace:** “8 players per tournament”; subsequent human lifecycle clarification. Draft maximum and post-start substitutions remain OQ-4.
+- **FR-1.2** The system MUST identify participants by their supplied names.
+  - **Acceptance criteria:** Each assigned participant's supplied name is available in tournament participant information, including incomplete drafts.
   - **Trace:** “players names.”
+- **FR-1.3** The system MUST support creating a draft and assigning participants to it.
+  - **Acceptance criteria:** Creating a tournament returns its stable reference and draft state; assigning a participant associates that participant and supplied name with the referenced draft and is reflected on the next retrieval. Additional tournament fields and name identity rules remain OQ-3/OQ-5.
 
 ### Matches and Match Plan
 
-- **FR-2.1** The system MUST provide a match plan identifying the tournament participants competing against each other.
-  - **Acceptance criteria:** Given a tournament with a defined match plan, the plan is viewable and identifies the competing participants for every listed match.
+- **FR-2.1** The system MUST provide a viewable match plan identifying the competing participants for each listed match.
+  - **Acceptance criteria:** Retrieving a defined plan identifies every listed match and its competing participants.
   - **Trace:** “they play against each other”; “match plan.”
+- **FR-2.2** The system MUST support entering and changing a match plan.
+  - **Acceptance criteria:** A change satisfying the eventually defined format and lifecycle rules replaces the applicable plan information on next retrieval. Rejected changes leave the prior plan intact. Plan generation, scheduling fields and post-start changes remain OQ-8/OQ-9.
 
 ### Scoreboard
 
-- **FR-3.1** The system MUST display match scores on a scoreboard.
-  - **Acceptance criteria:** Given a match for which score information is available, the scoreboard shows that information and identifies the corresponding match and competing participants.
+- **FR-3.1** The system MUST display available match scores with the corresponding match and competing participants.
+  - **Acceptance criteria:** The scoreboard associates each available score with its match and participants.
   - **Trace:** “scoreboard”; “players names, they play against each other.”
+- **FR-3.2** The system MUST support entering and correcting scores and completed match results.
+  - **Acceptance criteria:** An accepted entry/correction is returned on next retrieval; a rejected entry leaves the prior result intact. Completed results identify winning and losing participants without counting a participant on both sides. Tennis scoring and completion rules remain OQ-10; these rules do not choose singles or doubles.
 
 ### World and Local Rankings
 
-- **FR-4.1** The system MUST present world ranking information.
-  - **Acceptance criteria:** Given world ranking information available to the system, users can view it and identify its scope as world ranking.
+- **FR-4.1** The system MUST present available world ranking information with explicit world scope.
+  - **Acceptance criteria:** Users viewing available world ranking information can identify its world scope.
+  - **Trace:** “world and local ranking.”
+- **FR-4.2** The system MUST present available local ranking information with explicit local scope.
+  - **Acceptance criteria:** Users viewing available local ranking information can identify its local scope.
   - **Trace:** “world and local ranking.”
 
-- **FR-4.2** The system MUST present local ranking information.
-  - **Acceptance criteria:** Given local ranking information available to the system, users can view it and identify its scope as local ranking.
-  - **Trace:** “world and local ranking.”
+### Tournament Statistics
+
+- **FR-5.1** The system MUST provide per-tournament, per-participant completed matches played, wins, losses and win percentage derived from recorded completed results.
+  - **Acceptance criteria:** A participant's played count is wins plus losses; each completed match counts once for each recorded winning/losing participant. Scheduled/in-progress matches do not contribute. Win percentage is wins / played × 100 rounded to one decimal; with no completed matches it is unavailable (counts are zero). A corrected result changes the next retrieved totals without retaining the old contribution. This does not define ranking algorithms or match format.
+
+### Merchandising
+
+- **FR-6.1** The system MUST maintain catalog entries with stable item reference, name, nonnegative unit price, currency and nonnegative integer stock, supporting edits and reasoned stock adjustments.
+  - **Acceptance criteria:** Creation and valid edits are reflected on retrieval. An adjustment records its reason and resulting stock; negative resulting stock or noninteger quantities are rejected without change.
+- **FR-6.2** The system MUST record a merchandise sale against a unique sale reference, item and positive integer quantity, preserving the item's price/currency at acceptance and decrementing stock once.
+  - **Acceptance criteria:** With sufficient stock, one sale and the corresponding decrement result. Insufficient stock leaves both unchanged. Repeating the same reference and content returns the established result; conflicting reuse is rejected. Later item edits do not alter the sale snapshot. Refunds, returns and sale reversals are outside launch scope.
+- **FR-6.3** The system MUST report quantities sold by item and sale totals separately per currency.
+  - **Acceptance criteria:** Each accepted sale contributes quantity and quantity × snapshot unit price once. Unlike currencies are never summed into one total.
+
+### Beer Garden
+
+- **FR-7.1** The system MUST maintain menu entries with stable reference, name, nonnegative unit price and currency, supporting creation and edits.
+  - **Acceptance criteria:** Valid changes appear on retrieval; changing a menu entry does not change existing order snapshots.
+- **FR-7.2** The system MUST create orders with a stable reference, one or more positive-integer-quantity menu lines, a single currency and price snapshots from the menu at order creation; orders start open.
+  - **Acceptance criteria:** A valid order preserves its lines, prices and currency on retrieval. Empty orders, invalid quantities or mixed currencies are rejected. No customer identity is required. Lines are fixed after creation; cancel and create a new order to replace them.
+- **FR-7.3** The system MUST support open → completed or open → cancelled transitions, with exactly one sale record on completion and none on cancellation.
+  - **Acceptance criteria:** Completion contributes the order's snapshot total once; repeated completion returns the established result. Cancellation contributes no sale. Completed/cancelled orders cannot be reopened or switched to the other terminal state. Repeated cancellation returns the cancelled state.
+- **FR-7.4** The system MUST show order status and completed beer-garden sales totals per currency.
+  - **Acceptance criteria:** Open/cancelled orders contribute nothing; completed orders contribute once. Currency totals remain separate. Ingredient inventory, bookings, delivery and loyalty are outside launch scope.
+
+### Commerce Outcomes
+
+- **FR-8.1** The system MUST distinguish confirmed, rejected and unresolved mutation outcomes and support resolving an uncertain sale/order outcome using its stable reference without duplicate effects.
+  - **Acceptance criteria:** After a response timeout, reference-based retrieval or resubmission identifies the recorded outcome or explicitly reports it unresolved; it never claims rejection merely because a response was lost. The same completed operation cannot produce a second sale or decrement. Rejected operations leave no partial business change.
+- **FR-8.2** Launch commerce MUST record sales without online payment processing or payment-provider integration.
+  - **Acceptance criteria:** The catalog/sale/order workflows complete without invoking a payment provider. Sensitive-input policy: [SEC-DATA-02](SECURITY.md#security-requirements). A recorded sale means a business sales record, not verification of settlement. Configured currencies and their supported monetary precision are TO BE DECIDED; calculations must preserve exact amounts at that precision.
 
 # Open Questions
 
-- **OQ-1** What tournament format is required? Does “play against each other” require every player to play every other player, or does it describe participation in another format?
+- **OQ-1 — TO BE DECIDED:** What tournament format is required: every player against every other, or another format?
+- **OQ-2 — TO BE DECIDED:** Singles, doubles or both; if doubles, how are the eight players assigned to teams?
+- **OQ-3 — TO BE DECIDED:** What tournament fields beyond reference, draft state and participants are required?
+- **OQ-4 — TO BE DECIDED:** What maximum draft size, post-start participant changes/substitutions and other lifecycle states are supported?
+- **OQ-5 — TO BE DECIDED:** How are names entered/corrected and validated, and how are participants with identical names distinguished?
+- **OQ-8 — TO BE DECIDED:** Is the plan entered manually, generated or imported; which order/date/time/location fields are required?
+- **OQ-9 — TO BE DECIDED:** Which changes are permitted after arranging or starting matches?
+- **OQ-10 — TO BE DECIDED:** Which tennis scoring and match completion rules apply; what score detail and match/tournament coverage does the scoreboard show?
+- **OQ-11 — TO BE DECIDED:** What score validation/rejection details and update latency beyond next retrieval are required?
+- **OQ-13 — TO BE DECIDED:** What entities are ranked and what geographic/organizational boundary defines local?
+- **OQ-14 — TO BE DECIDED:** Are rankings calculated, entered or imported; what rules, ties and refresh frequency apply?
+- **OQ-17 — TO BE DECIDED:** Which external integrations, exchanged information, triggers and failure behavior are required?
+- **OQ-18 — TO BE DECIDED:** What unavailable/incomplete-data behavior applies to scores, rankings and plans (statistics with no results are defined in FR-5.1)?
+- **OQ-19 — TO BE DECIDED:** What measurable capacity, response-time, availability, update-latency and recovery objectives are required? Are offline behavior or asynchronous/scheduled processing needed?
 
-- **OQ-2** Are matches singles, doubles, or both? If doubles are supported, how are the eight players assigned to teams?
-
-- **OQ-3** How are tournaments created and participants assigned? Who performs these actions, and what tournament information is required beyond the participants?
-
-- **OQ-4** When must the eight-player requirement be enforced? Can a tournament temporarily contain fewer than eight players while being prepared, and what must happen when an action would violate the limit?
-
-- **OQ-5** How are player names entered and corrected? What name validation is required, and how must participants with identical names be distinguished?
-
-- **OQ-6** Which capabilities and data may players, judges, admin, press, trainers, and audience view or change? Do these actor categories represent access-control roles, and can one person belong to multiple categories?
-
-- **OQ-7** Which actions require authentication, if any? What observable response is required when an actor attempts an action without the necessary permission?
-
-- **OQ-8** Is the match plan entered manually, generated by the system, or obtained elsewhere? Must it contain only opponents, or also match order, dates, times, and locations?
-
-- **OQ-9** How are changes to the match plan handled after matches have been arranged or started? Which changes are permitted, and who may make them?
-
-- **OQ-10** What tennis scoring rules and match completion rules apply? What score detail must the scoreboard show, and does it cover one match, multiple matches, or the entire tournament?
-
-- **OQ-11** Who or what supplies scores? How are scores validated and corrected, what happens when a score update is rejected, and how quickly must accepted updates appear?
-
-- **OQ-12** Which statistics are required? For each statistic, what are its definition, source data, calculation rules, scope, and required presentation?
-
-- **OQ-13** What do the world and local rankings rank? What geographic or organizational boundary defines “local”?
-
-- **OQ-14** Are rankings calculated by the system, entered by an actor, or imported from an external source? What ranking rules, tie handling, and update frequency apply?
-
-- **OQ-15** What does merchandising include? Which actor actions, business records, and observable outcomes must the system support?
-
-- **OQ-16** What does beer garden management include? Which actor actions, business records, and observable outcomes must the system support?
-
-- **OQ-17** Are external integrations required for any capability? If so, what information is exchanged, when does exchange occur, and what must happen when it fails?
-
-- **OQ-18** What behavior is required when scores, statistics, rankings, or match plans are unavailable or incomplete?
-
-- **OQ-19** Are there specific measurable non-functional requirements, such as required capacity or response times? None are supplied in the notes.
-
-- **OQ-20** What privacy or regulatory requirements apply to player information, merchandising, and beer garden activities? Are any required restrictions, retention periods, or deletion behaviors applicable?
+Resolved question history: OQ-3/4 creation and start timing → FR-1.1/1.3; OQ-9/11 supported editing → FR-2.2/3.2; OQ-12 statistics → FR-5.1; OQ-15 merchandising → FR-6.1–6.3; OQ-16 beer garden → FR-7.1–7.4. Former OQ-6/7 (roles, multiple categories, authentication, permissions and unauthorized response) and OQ-20 (privacy/regulation, restrictions, retention and deletion) are owned by [SECURITY.md](SECURITY.md#open-security-questions), including remaining questions.
 
 # Exclusions
 
-- Implementation architecture, languages, frameworks, databases, and component choices.
-- Deployment and infrastructure decisions.
-- Generic or assumed non-functional requirements.
-- Unspecified tournament formats, scoring rules, ranking algorithms, and statistical calculations.
-- Assumed authentication methods or permissions based only on actor names.
-- Speculative merchandising or beer garden features.
-- Other functionality unsupported by the project notes.
+Implementation languages, frameworks, components, deployment and infrastructure are owned by [ARCHITECTURE.md](ARCHITECTURE.md); visual/accessibility defaults by [DESIGN.md](DESIGN.md); authentication, authorization and security controls by [SECURITY.md](SECURITY.md). No unspecified format, scoring/ranking algorithm, generic nonfunctional target or functionality beyond the notes and explicit subsequent decisions is inferred. Commerce exclusions are specified with the relevant requirements above.
