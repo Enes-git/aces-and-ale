@@ -1,16 +1,16 @@
 ## Required Design Inputs
 
 - Brand personality: TO BE DECIDED
-- Primary audience: Players, judges, admin, press, trainers, audience. Responsibilities and permissions: UNKNOWN.
-- Platform targets (web / mobile / both): TO BE DECIDED
+- Audience/workflows: [REQUIREMENTS.md](REQUIREMENTS.md); permissions/disclosure: [SECURITY.md](SECURITY.md#access-and-disclosure-policy).
+- Platform targets: [ARCHITECTURE.md](ARCHITECTURE.md#selected-technologies). Viewing conditions, essential sizes and native design mappings: TO BE DECIDED.
 - Light / dark mode: TO BE DECIDED
-- Existing brand assets: UNKNOWN
+- Existing assets: [logo.svg](logo.svg) and [README variant](docs/assets/readme-logo.svg). Additional external/preexisting assets: TO BE DECIDED.
 
 ## Brand and Logo
 
-Product name in the supplied requirements: UNKNOWN. Brand direction: TO BE DECIDED. The specifications below are neutral design defaults, not inferred brand preferences or additional product requirements.
+Current repository display name: **Aces & Ale**; current README tagline: **Eight players. Every match. Beyond the court.** These record existing wording, not evidence of formal brand approval. Naming/tagline approval, brand direction and any future wordmark: TO BE DECIDED. The specifications below are neutral design defaults, not inferred brand preferences or additional product requirements.
 
-`logo.svg` is a single generic tennis-ball mark: a dark circular silhouette with two white curved seams. It represents tennis only. It contains no lettering, mascot, external asset, gradient, or affiliation imagery. Naming and any future wordmark: TO BE DECIDED.
+`logo.svg` is a single generic tennis-ball mark: a dark circular silhouette with two white curved seams. It represents tennis only. It contains no lettering, mascot, external asset, gradient, or affiliation imagery. The [README variant](docs/assets/readme-logo.svg) embeds the unchanged 64 × 64 mark at (16,16) in a 96 × 96 white surface, providing quarter-box clear space. It is intended for the README header; the original remains the source mark.
 
 - Use the supplied 64 × 64 viewBox at its original square proportions, on `background` or `surface`.
 - Minimum display box: 24 × 24 CSS pixels. Clear space: at least one quarter of the displayed box width outside the box on every side.
@@ -54,7 +54,7 @@ Reference size: 1rem equals the user's default text size, ordinarily 16 CSS pixe
 - Use a fluid content area with a maximum width of 1200 CSS pixels. Basic grid: four columns below 640, eight from 640, twelve from 1024 CSS pixels; content may span the full grid.
 - Responsive breakpoints: 640 and 1024 CSS pixels. Outer gutters: 16, 24, and 32 CSS pixels respectively. These are layout defaults, not commitments to a platform.
 - Collapse independent regions into a single reading order when space is insufficient. Preserve the same logical reading and keyboard order across sizes.
-- Keep scores adjacent to their corresponding player names. Label world and local ranking scope explicitly. Use aligned rows for comparisons, with descriptive headers where data is tabular.
+- Keep scores adjacent to their corresponding player names. Visually distinguish ranking scope with explicit labels; functional associations and scope are owned by [FR-3/4](REQUIREMENTS.md#scoreboard). Use aligned rows for comparisons, with descriptive headers where data is tabular.
 - At 320 CSS pixels wide, reflow content without page-wide horizontal scrolling. Any essential two-dimensional table may scroll within a clearly identified region without losing access to its labels.
 - Tournament structure, navigation, scoring subdivisions, and statistics presentation remain TO BE DECIDED where the requirements leave behavior open. Do not assume a knockout bracket, live updates, or role-specific dashboards.
 
@@ -81,12 +81,12 @@ Apply these conventions only where an interaction is supported by resolved requi
 
 ## Open Questions
 
-- **OQ-1** What product name should the requirements establish, and is a wordmark needed? The source requirements do not name the product.
-- **OQ-2** What brand personality and approved brand assets should replace the neutral defaults?
-- **OQ-3** Are the targets web, mobile, or both, and what viewing conditions and display sizes are essential?
-- **OQ-4** Is light mode alone sufficient, or is dark mode required?
-- **OQ-5** Which actor actions and permissions determine navigation, editable controls, and read-only views?
-- **OQ-6** What tournament format, match-plan fields, score detail, statistics, and ranking data determine the information hierarchy and data layouts?
-- **OQ-7** What merchandising and beer garden workflows need interfaces once their scope is defined?
-- **OQ-8** Which languages, writing directions, and name-display conventions must the interface support?
-- **OQ-9** What update frequency, unavailable-data behavior, and feedback rules apply to scores, rankings, statistics, and match plans?
+- **OQ-1 — TO BE DECIDED:** Formal approval of current name/tagline and need for a wordmark.
+- **OQ-2 — TO BE DECIDED:** Brand personality and approved assets/colors to replace the neutral defaults.
+- **OQ-3 — TO BE DECIDED:** Viewing conditions, essential display sizes and platform-specific design mappings, using [selected platforms](ARCHITECTURE.md#selected-technologies).
+- **OQ-4 — TO BE DECIDED:** Light mode alone or dark mode support.
+- **OQ-5 — TO BE DECIDED:** Navigation/editable/read-only presentation of [supported workflows](REQUIREMENTS.md) under [resolved grants](SECURITY.md#access-and-disclosure-policy); permissions are not decided here.
+- **OQ-6 — TO BE DECIDED:** Information hierarchy/layout for tournament format, plan fields, score detail and rankings as their remaining [product questions](REQUIREMENTS.md#open-questions) resolve; statistics behavior is FR-5.1.
+- **OQ-7 — TO BE DECIDED:** Interface layouts for the now-defined [merchandising](REQUIREMENTS.md#merchandising) and [beer garden](REQUIREMENTS.md#beer-garden) workflows.
+- **OQ-8 — TO BE DECIDED:** Languages, writing directions and name-display conventions.
+- **OQ-9 — TO BE DECIDED:** Feedback/announcement presentation for updates and unavailable data under [product semantics](REQUIREMENTS.md#open-questions); do not invent refresh frequencies here.

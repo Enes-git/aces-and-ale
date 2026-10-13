@@ -1,12 +1,12 @@
 
 
-# Requirement Template - Web & API Applications
+# Requirement Template
 
-Use one copy of this template for each atomic requirement.
+Authoring rules and atomicity: [AGENTS.md](AGENTS.md#requirement-authoring). Use one copy per requirement.
 
 Replace bracketed placeholders when authoring a requirement. Use `N/A` only when a field has been evaluated and is not applicable. Use `TO BE DECIDED` when the answer is unresolved.
 
-Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 8174. Prefer `MUST`, `MUST NOT`, `SHOULD`, `SHOULD NOT`, and `MAY`. Split compound behavior into separate requirements.
+Normative wording, acceptance-criterion and verified-standard-mapping conventions: [AGENTS.md](AGENTS.md#requirement-authoring). Security policy and verification: [SECURITY.md](SECURITY.md). Fields below collect references and decisions; they do not create new policy.
 
 ## Metadata
 
@@ -18,7 +18,7 @@ Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 81
 - **Author**: [Name]
 - **Last Updated**: [ISO 8601 date: YYYY-MM-DD]
 - **Priority**: [Critical | High | Medium | Low]
-- **Requirement Type**: [Functional | Security | Privacy | Compliance | Performance | Reliability | Operational]
+- **Requirement Type**: [Owner-appropriate type, e.g., Functional | Security | Privacy | Compliance | Performance | Reliability | Operational | Design | Accessibility]
 - **Source / Parent**: [Source requirement IDs, stakeholder decision, threat-model decision, legal obligation, issue, or other origin]
 
 ## Requirement
@@ -28,18 +28,18 @@ Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 81
 - **Assumptions**: [Assumptions on which the requirement depends, or `None`.]
 - **Out of Scope**: [Behavior that is explicitly excluded from this requirement, or `None`.]
 - **Design Traceability**: [Relevant `DESIGN.md` section or decision, or `N/A`. Do not invent missing design decisions.]
-- **Architecture Traceability**: [Relevant `ARCHITECTURE.md` component, boundary, data flow, or dependency rule.]
+- **Architecture Traceability**: [Relevant `ARCHITECTURE.md` component, boundary, data flow or dependency reference; `N/A` or `TO BE DECIDED` as appropriate.]
 - **Security Traceability**: [Relevant `SECURITY.md` rule IDs, or `N/A`.]
 
 ## Scope
 
-- **Applies To**: [Web Client | Server-Side Application | API | Background Processing | External Integration | Multiple]
+- **Applies To**: [Web Client | Mobile Client | Server-Side Application | API | Background Processing | External Integration | Multiple]
 - **Components**: [Affected logical components using the names defined in `ARCHITECTURE.md`]
 - **Interfaces / Operations**: [Affected pages, workflows, API operations, events, or commands]
 - **Actors**: [Affected users, roles, service identities, administrators, or external systems]
 - **Preconditions**: [State that MUST exist before the behavior occurs, or `None`]
-- **Data Classification**: [Public | Internal | Confidential | Restricted | Multiple | N/A]
-- **Personal or Regulated Data**: [None | Personal Data | Sensitive Personal Data | Payment Account Data | Health Data | Financial Data | Other]
+- **Data Classification**: [Classification from SECURITY.md; proposed taxonomy is recorded there; `N/A` or `TO BE DECIDED` as appropriate]
+- **Personal or Regulated Data**: [Descriptor from SECURITY.md; examples and their unapproved status are recorded there]
 - **Jurisdiction / Regulatory Scope**: [Established jurisdiction or regulatory scope, `N/A`, or `TO BE DECIDED`]
 
 ## Security Context
@@ -56,7 +56,7 @@ Uppercase normative terms use BCP 14 semantics as defined by RFC 2119 and RFC 81
 
 ## Standards Alignment
 
-Only include mappings verified against the cited version of the standard. Do not guess control identifiers.
+Mapping verification rules: [AGENTS.md](AGENTS.md#requirement-authoring).
 
 Use `N/A` when a standard has been evaluated and does not apply. Use `TO BE DECIDED` when applicability or mapping has not yet been assessed.
 
@@ -70,13 +70,7 @@ Use `N/A` when a standard has been evaluated and does not apply. Use `TO BE DECI
 
 ## Acceptance Criteria
 
-Each acceptance criterion MUST:
-
-- describe one observable pass/fail outcome
-- be independently testable
-- remain within the behavior defined by the requirement
-- identify relevant preconditions, action, and expected result
-- avoid introducing new product behavior
+Acceptance-criterion authoring rules: [AGENTS.md](AGENTS.md#requirement-authoring).
 
 Use Given/When/Then or an equally explicit pass/fail form.
 
@@ -89,10 +83,10 @@ Use Given/When/Then or an equally explicit pass/fail form.
 
 - **On Invalid Input**: [Protocol-appropriate rejection behavior, error classification, and confirmation that no protected state change or sensitive side effect occurs]
 - **On Authentication Failure**: [Expected response and disclosure behavior, or `N/A`]
-- **On Authorization Failure**: [Deny the operation; define response behavior and whether resource existence may be disclosed, or `N/A`]
-- **On Security-Decision Failure**: [Deny by default unless an explicit, documented risk decision permits another behavior]
+- **On Authorization Failure**: [SEC-ACCESS-01/02 reference and applicable response behavior, or `N/A`]
+- **On Security-Decision Failure**: [SEC-FAIL-01 reference; exception status is owned by SECURITY.md]
 - **On External Dependency Failure**: [Timeout, retry, circuit-breaker, idempotency, or degradation behavior, or `N/A`]
-- **On System Error**: [Rollback, consistency, recovery, and safe error-response behavior; internal state and sensitive data MUST NOT be disclosed]
+- **On System Error**: [Applicable SEC-FAIL-01/SEC-OPS-01 and functional consistency/recovery references]
 - **Logging / Audit**: [Events and fields to record, correlation mechanism, redaction requirements, and prohibited data]
 - **Alerting**: [Alert condition, threshold, severity, and destination, or `N/A`]
 
@@ -103,7 +97,7 @@ Use Given/When/Then or an equally explicit pass/fail form.
 - **Security Tests**: [Applicable negative tests, abuse cases, authorization tests, fuzzing classes, SAST rules, DAST targets, or manual review items]
 - **Compliance Tests / Evidence**: [Automated or manual evidence required for an applicable obligation, or `N/A`]
 - **Acceptance-Criteria Traceability**: [Test identifier or test suite covering each `AC-*` criterion]
-- **Coverage Target**: [Project-defined target. All security-critical decisions and error paths MUST include positive and negative test coverage.]
+- **Coverage Target**: [Project-defined target; security coverage obligations: SECURITY.md#security-verification]
 - **Required Test Environment**: [Fixtures, identities, roles, dependency simulators, configuration, or test data required]
 
 ## Dependencies
@@ -117,9 +111,9 @@ Use Given/When/Then or an equally explicit pass/fail form.
 ## Implementation Notes
 
 - **Constraints**: [Mandatory technology, compatibility, latency, availability, migration, legal, or deadline constraints]
-- **Prohibited Approaches**: [Explicit anti-patterns, such as relying solely on client-side enforcement or logging credentials, tokens, or sensitive raw data]
+- **Prohibited Approaches**: [Applicable owner prohibitions; security examples are SEC-ACCESS-01 and SEC-OPS-01]
 - **Implementation Guidance**: [Non-normative guidance that does not add or alter required behavior]
 - **AI Development Guidance**: [Applicable prompt-library files, repository instructions, secure-coding rules, and mandatory human-review gates, or `N/A`]
-- **Required Human Review**: [Security, privacy, architecture, legal, product, or domain reviewers required before approval or release]
+- **Required Human Review**: [Established review-policy reference, or `TO BE DECIDED`; possible reviewer disciplines: security, privacy, architecture, legal, product, domain]
 - **Open Decisions**: [Unresolved decisions that prevent approval or implementation, or `None`]
 
