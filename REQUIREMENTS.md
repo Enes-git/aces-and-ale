@@ -5,7 +5,7 @@ This document owns functional and nonfunctional product behavior and acceptance 
 ## Required Requirement Inputs
 
 - Purpose: Manage tennis tournaments with eight players at the start of play, participant names, matches, scoreboard, statistics, world/local rankings, match plans, merchandising and beer garden management.
-- Actor categories: Players, judges, admin, press, trainers and audience; categories are not themselves access grants. Permissions and account relationships: [SECURITY.md](SECURITY.md#access-and-disclosure-policy).
+- Actor categories: Players, judges, admin, press, trainers and audience. Permissions and account relationships: [SECURITY.md](SECURITY.md#access-and-disclosure-policy).
 - Business records: Tournaments, participants and supplied names, matches, plans, scores/completed results, statistics and rankings; catalog items, stock adjustments, sales, menu entries and orders as defined below.
 - External integrations and unprovided measurable nonfunctional targets: TO BE DECIDED (OQ-17 and OQ-19).
 - Security/authentication and regulatory/privacy decisions: [SECURITY.md](SECURITY.md#open-security-questions).
@@ -81,7 +81,7 @@ All operations below are subject to the owner policy in [SECURITY.md](SECURITY.m
 - **FR-8.1** The system MUST distinguish confirmed, rejected and unresolved mutation outcomes and support resolving an uncertain sale/order outcome using its stable reference without duplicate effects.
   - **Acceptance criteria:** After a response timeout, reference-based retrieval or resubmission identifies the recorded outcome or explicitly reports it unresolved; it never claims rejection merely because a response was lost. The same completed operation cannot produce a second sale or decrement. Rejected operations leave no partial business change.
 - **FR-8.2** Launch commerce MUST record sales without online payment processing or payment-provider integration.
-  - **Acceptance criteria:** The catalog/sale/order workflows complete without collecting payment credentials or invoking a payment provider. A recorded sale means a business sales record, not verification of settlement. Configured currencies and their supported monetary precision are TO BE DECIDED; calculations must preserve exact amounts at that precision.
+  - **Acceptance criteria:** The catalog/sale/order workflows complete without invoking a payment provider. Sensitive-input policy: [SEC-DATA-02](SECURITY.md#security-requirements). A recorded sale means a business sales record, not verification of settlement. Configured currencies and their supported monetary precision are TO BE DECIDED; calculations must preserve exact amounts at that precision.
 
 # Open Questions
 
